@@ -12,6 +12,7 @@
 @section('content')
 
 <h4 class="mb-3">You're about to lose your money brah</h4>
+<p>Trying to pay <?php echo $transaction_id; ?></p>
 <hr class="mb-4">
 <div class="row">
     <div class="col-sm">

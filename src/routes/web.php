@@ -30,12 +30,6 @@ $router->get('/shop', function () use ($router) {
 
     $response = $guzzle->get($endpoint);
 
-    echo "<pre>";
-    var_dump($response->getStatusCode());
-    var_dump(json_decode($response->getBody()->getContents(), 1));
-    echo "</pre>";
-    die;
-
     return $router->app->version();
 });
 
@@ -76,42 +70,36 @@ $router->get('/public/pay', function () use ($router) {
 });
 
 $router->post('/coin/payment_methods', function () use ($router) {
-    $content = "
-    {
-  \"payment_methods\": [
-    {
-      \"id\": 1,
-      \"title\": \"Mastercard\",
-      \"price_incl\":6.05,
-      \"price_excl\": 5.00,
-      \"tax_rate\": 0.21,
-      \"icon\": \"mastercard\"
-    },
-    {
-      \"id\": 2,
-      \"title\": \"Visa\",
-      \"price_incl\":6.05,
-      \"price_excl\": 5.00,
-      \"tax_rate\": 0.21,
-      \"icon\": \"visa\"
-    },
-    {
-      \"id\": 3,
-      \"title\": \"Pay after delivery\",
-      \"price_incl\":6.05,
-      \"price_excl\": 5.00,
-      \"tax_rate\": 0.21,
-      \"icon\": \"https://yourdomain.com/icon-pay-after-delivery.png\"
-    }
-  ]
-}";
 
+    $methods['payment_methods'] = [[
+        'id' => 1,
+        'title'  => 'Mastercard',
+        'price_incl' => 1.00,
+        'price_excl' => 1.21,
+        'tax_rate' => 0.21,
+        'icon' => 'mastercard'
+    ],
+    [
+        'id' => 2,
+        'title' => 'Visa',
+        'price_incl' => 1.00,
+        'price_excl' => 1.21,
+        'tax_rate' => 0.21,
+        'icon' => 'visa'
+    ], [
+        'id' => 3,
+        'title' => 'Pay after delivery',
+        'price_incl' => 1.00,
+        'price_excl' => 1.21,
+        'tax_rate' => 0.21,
+        'icon' => 'https://static.webshopapp.com/assets/icon-payment-blank.png'
+    ]];
 
     // Return it
-    return (new Response($content, 201))
+    return (new Response(json_encode($methods), 201))
         ->header('Content-Type', 'application/json');
 });
 
-$router->get('/pay', function () use ($router) {
-    return view('pay');
-});
+
+$router->get('/coin/pay/{id}', 'PaymentController@pay');
+$router->post('/coin/payment', 'PaymentController@create');
