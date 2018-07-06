@@ -1,5 +1,9 @@
 version: '3'
 services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: super_secret
   www:
     build: .
     tty: true
@@ -11,3 +15,4 @@ services:
       - ./src:/var/www
     expose:
       - "8087"
+
