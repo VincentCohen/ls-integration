@@ -1,9 +1,14 @@
 version: '3'
 services:
   mysql:
-    image: mysql
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: super_secret
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: lumen
+      MYSQL_USER: lumen
+      MYSQL_PASSWORD: secret
   www:
     build: .
     tty: true
