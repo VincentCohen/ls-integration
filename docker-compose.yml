@@ -13,7 +13,7 @@ services:
     build: .
     tty: true
     stdin_open: true
-    command: "php -S 0.0.0.0:8087 -t /var/www/"
+    command: "php -S 0.0.0.0:8087 -t /var/www/public/"
     ports:
       - "8087:8087"
     volumes:
