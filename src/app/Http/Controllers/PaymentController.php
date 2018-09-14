@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Transaction;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -13,22 +12,30 @@ class PaymentController extends Controller
         //
     }
 
-    public function pay($transactionId)
+    public function view($orderId)
     {
-        $results = DB::select("SELECT * FROM users");
-
-        die;
-//        return view('pay', ['transaction_id' => $transactionId]);
+        return view('pay', ['order_id' => $orderId]);
     }
 
-    public function create(Request $request)
+    public function create($orderId)
     {
-        $order = $request->input('order');
-        $shop  = $request->input('shop');
+        $transaction = Transaction::where('order_id', $orderId)->count();
 
-        $transactionId = hash('sha256',array_get($order, 'order_id') .  array_get($shop, 'id'));
+        if (!$transaction) {
+            $transaction = new Transaction();
 
-        return response()->json(['payment_url' => url('/coin/pay/' . $transactionId)]);
+            $transaction->order_id = $orderId;
+            $transaction->status = 'paid';
+            $transaction->price_incl = 0;
+            $transaction->price_excl = 0;
+            $transaction->price_tax = 0;
+            $transaction->currency = 'EUR';
+            $transaction->raw = json_encode([]);
+
+            $transaction->save();
+        }
+
+        return $transaction;
     }
 
     /**

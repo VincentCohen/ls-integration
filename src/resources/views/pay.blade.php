@@ -12,11 +12,14 @@
 @section('content')
 
 <h4 class="mb-3">You're about to lose your money brah</h4>
-<p>Trying to pay <?php echo $transaction_id; ?></p>
+<p>Trying to pay <?php echo $order_id; ?></p>
 <hr class="mb-4">
 <div class="row">
     <div class="col-sm">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Pay</button>
+
+        <form action="<?php echo $order_id ?>" method="post">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Pay</button>
+        </form>
     </div>
     <div class="col-sm">
         <button class="btn btn-danger btn-lg btn-block" type="submit">Cancel</button>
